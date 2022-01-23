@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chromatic</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="reset.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+  </head>
+  <body>
+    <main>
+      <h1>Chromatic.Systems</h1>
+      <canvas id="canvas" width="400px" height="400px"></canvas>
+      <div id="links">
+        <a href="/index.html">template</a>
+      </div>
+      <script>
+        // Set up the canvas
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var W = canvas.width;
+        var H = canvas.height;
+
+        // create a point object with angle, color, and radius properties
+        function createPoint(angle, radius, color) {
+          return {
+            angle: angle,
+            radius: radius,
+            color: color
+          }
+        }
+
+        // create 60 points with increasing angle around the circle
+        // and random radius between 90 and 100
+        // and random color in hsl format
+        function createRandomPoints() {
+          var points = [];
+          for (var i = 0; i < 60; i++) {
+            var angle = i * 2 * Math.PI / 60;
+            var radius = Math.random() * 10 + 90;
+            var color = "hsl(" + Math.random() * 360 + ", 100%, 50%)";
+            points.push(createPoint(angle, radius, color));
+          }
+          return points;
+        }
+
+        // convert a points angle and radius to x and y coordinates
+        function pointToCoordinates(point) {
+          var x = W / 2 + point.radius * Math.cos(point.angle);
+          var y = H / 2 + point.radius * Math.sin(point.angle);
+          return {
+            x: x,
+            y: y
+          }
+        }
+
+        // draw a point on the canvas
+        function drawPoint(point) {
+          var coordinates = pointToCoordinates(point);
+          ctx.beginPath();
+          ctx.arc(coordinates.x, coordinates.y, 3, 0, 2 * Math.PI);
+          ctx.fillStyle = point.color;
+          ctx.fill();
+        }
+
+        // draw the points
+        function draw() {
+          // clear the canvas
+          ctx.clearRect(0, 0, W, H);
+          // fill the canvas with a black background
+          ctx.fillStyle = "black";
+          ctx.fillRect(0, 0, W, H);
+
+          // draw each point
+          for (var i = 0; i < points.length; i++) {
+            drawPoint(points[i]);
+          }
+        }
+
+        // create 60 random points
+        var points = createRandomPoints();
+
+        // animate the points 
+        // and rotate each point by 0.01 radians
+        // and update the radius of each point by +/- 1
+        // and draw the points
+        function animate() {
+          for (var i = 0; i < points.length; i++) {
+            points[i].angle += 0.01;
+            points[i].radius += Math.random() * 2 - 1;
+          }
+          draw();
+          requestAnimationFrame(animate);
+        }
+        animate();
+      </script>
+    </main>
+  </body>
+</html>
