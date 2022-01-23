@@ -22,68 +22,8 @@
         var W = canvas.width;
         var H = canvas.height;
 
-        // create a line to represent the X axis with ticks every 10 units
-        function drawXAxis() {
-          // set the line to white
-          ctx.strokeStyle = "white";
-          ctx.beginPath();
-          ctx.moveTo(0, H/2);
-          ctx.lineTo(W, H/2);
-          ctx.stroke();
-          ctx.closePath();
-
-          // draw the ticks
-          for (var i = 0; i < W; i += 10) {
-            ctx.beginPath();
-            ctx.moveTo(i, H/2 - 5);
-            ctx.lineTo(i, H/2 + 5);
-            ctx.stroke();
-            ctx.closePath();
-          }
-        }
-
-        drawXAxis();
-
-        // create a line to represent the Y axis
-        function drawYAxis() {
-          ctx.strokeStyle = "white";
-          ctx.beginPath();
-          ctx.moveTo(W / 2, 0);
-          ctx.lineTo(W / 2, H);
-          ctx.stroke();
-        }
-
-        drawYAxis();
-
-        // create a list of points for x^2 - 6x + 5 with x from -100 to 100
-        function createPointList() {
-          var points = [];
-          for (var x = -100; x <= 100; x++) {
-            var y = Math.pow(x, 2) - 6 * x + 5;
-            points.push({
-              x: x,
-              y: y
-            });
-          }
-          return points;
-        }
-        
-        // draw the points as a white line
-        function drawLine() {
-          var points = createPointList();
-          // set the color to white
-          ctx.strokeStyle = "white";
-          ctx.beginPath();
-          ctx.moveTo(points[0].x + W / 2, points[0].y + H / 2);
-          for (var i = 1; i < points.length; i++) {
-            ctx.lineTo(points[i].x * 10 + W / 2, points[i].y * 10 + H / 2);
-          }
-          ctx.stroke();
-        }
-
-        drawLine();
-
-
+        // adds a white border to the canvas with css
+        canvas.style.border = "1px solid #fff";
 
       </script>
     </main>
