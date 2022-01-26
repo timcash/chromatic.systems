@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chromatic</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="reset.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
+  </head>
+  <body>
+    <main id="main">
+      <canvas id="canvas"></canvas>
+    </main>
+  </body>
+  <!-- a script that loads after the dom -->
+  <script>
+    // setup the canvas
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    // set the size of the canvas to fill the screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // function cartiesianToPoler
+    function cartiesianToPolar(x, y) {
+      var r = Math.sqrt(x * x + y * y);
+      var theta = Math.atan2(y, x);
+      return [r, theta];
+    }
+    // function polarToCartiesian
+    function polarToCartiesian(r, theta) {
+      var x = r * Math.cos(theta);
+      var y = r * Math.sin(theta);
+      return [x, y];
+    }
+    // function translateToWorld
+    function translateToWorld(x, y) {
+      var x = x + canvas.width / 2;
+      var y = y + canvas.height / 2;
+      return [x, y];
+    }
+
+    function thetaToColor(theta) {
+      var hue = theta / (2 * Math.PI);
+      return "hsl(" + hue * 360 + ", 100%, 50%)";
+    }
+
+    // create a list of incrementing polar coordinates
+    // r=50
+    // theta range from 0 to 2pi
+    // increment by 0.1
+    var polarCoordinates = [];
+    for (var theta = 0; theta < 2 * Math.PI; theta += 0.1) {
+      var cartiesian = polarToCartiesian(50, theta);
+      polarCoordinates.push(cartiesianToPolar(cartiesian[0], cartiesian[1]));
+    }
+
+    // translate the corrdinates to the world
+    // draw them as small white dots with radius 10
+    for (var i = 0; i < polarCoordinates.length; i++) {
+      var cartiesian = polarToCartiesian(
+        polarCoordinates[i][0],
+        polarCoordinates[i][1]
+      );
+      var world = translateToWorld(cartiesian[0], cartiesian[1]);
+      ctx.beginPath();
+      ctx.arc(world[0], world[1], 10, 0, Math.PI * 2, false);
+      // use the theta to determine the color
+      ctx.fillStyle = thetaToColor(polarCoordinates[i][1]);
+      ctx.fill();
+      ctx.strokeStyle = "black";
+      ctx.stroke();
+    }
+  </script>
+</html>

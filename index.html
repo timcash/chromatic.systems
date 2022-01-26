@@ -1,7 +1,8 @@
+<!-- draws a multiplication circle -->
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Chromatic</title>
+    <title>Grid</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="reset.css" />
@@ -15,90 +16,72 @@
   </body>
   <!-- a script that loads after the dom -->
   <script>
+    // dissalow scrolling in css
+    document.body.style.overflow = "hidden";
     // setup the canvas
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     // set the size of the canvas to fill the screen
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    // create a point to represent the center of the canvas
+    var center = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+    };
 
-    // create a function that represents a entity as a circle
-    function Circle(x, y, dx, dy, radius) {
-      this.x = x;
-      this.y = y;
-      this.dx = dx;
-      this.dy = dy;
-      this.radius = radius;
+    // set the text color to white
+    ctx.fillStyle = "white";
 
-      // draw the circle
-      this.draw = function () {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        ctx.fillStyle = "white";
-        ctx.fill();
-        ctx.strokeStyle = "black";
-        ctx.stroke();
-      };
+    // set the font size to large
+    ctx.font = "50px Arial";
+
+    // draw hello world in spanish at the center of the canvas
+    ctx.fillText("Hola Mundo", center.x - 150, center.y);
+
+    //clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // draw a large circle at the center of the canvas
+    ctx.beginPath();
+    ctx.arc(center.x, center.y, 200, 0, Math.PI * 2, false);
+    ctx.fillStyle = "white";
+    ctx.fill();
+
+    // draw a circle 1/2 the size of the prievous circle
+    // in black
+    ctx.beginPath();
+    ctx.arc(center.x, center.y, 100, 0, Math.PI * 2, false);
+    ctx.fillStyle = "black";
+    ctx.fill();
+
+    // draw a half circle in red
+    ctx.beginPath();
+    ctx.arc(center.x, center.y, 50, 0, Math.PI, false);
+    ctx.fillStyle = "red";
+    ctx.fill();
+
+    // draw a triangle inside the white circle
+    ctx.beginPath();
+    ctx.moveTo(center.x - 50, center.y - 50);
+    ctx.lineTo(center.x + 50, center.y - 50);
+    ctx.lineTo(center.x, center.y + 50);
+    ctx.fillStyle = "white";
+    ctx.fill();
+
+    // draw a yellow box around the outside of the white circle
+    ctx.beginPath();
+    ctx.rect(center.x - 50, center.y - 50, 100, 100);
+    ctx.strokeStyle = "yellow";
+    ctx.stroke();
+
+    // draw a grid of white lines
+    for (var i = 0; i < canvas.width; i += 50) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, canvas.height);
+      ctx.strokeStyle = "white";
+      ctx.stroke();
     }
-
-    // create three circles
-    var circle1 = new Circle(100, 100, 3, 3, 30);
-    var circle2 = new Circle(200, 200, -3, -3, 30);
-    var circle3 = new Circle(300, 300, 5, 5, 30);
-
-    // draw the circles
-    circle1.draw();
-    circle2.draw();
-    circle3.draw();
-
-    // move the circles horizontally at 10 frames per second for 1 second
-    setInterval(function () {
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      circle1.draw();
-      circle2.draw();
-      circle3.draw();
-      circle1.x += circle1.dx;
-      circle1.y += circle1.dy;
-      circle2.x += circle2.dx;
-      circle2.y += circle2.dy;
-      circle3.x += circle3.dx;
-      circle3.y += circle3.dy;
-      if (
-        circle1.x + circle1.radius > innerWidth ||
-        circle1.x - circle1.radius < 0
-      ) {
-        circle1.dx = -circle1.dx;
-      }
-      if (
-        circle1.y + circle1.radius > innerHeight ||
-        circle1.y - circle1.radius < 0
-      ) {
-        circle1.dy = -circle1.dy;
-      }
-      if (
-        circle2.x + circle2.radius > innerWidth ||
-        circle2.x - circle2.radius < 0
-      ) {
-        circle2.dx = -circle2.dx;
-      }
-      if (
-        circle2.y + circle2.radius > innerHeight ||
-        circle2.y - circle2.radius < 0
-      ) {
-        circle2.dy = -circle2.dy;
-      }
-      if (
-        circle3.x + circle3.radius > innerWidth ||
-        circle3.x - circle3.radius < 0
-      ) {
-        circle3.dx = -circle3.dx;
-      }
-      if (
-        circle3.y + circle3.radius > innerHeight ||
-        circle3.y - circle3.radius < 0
-      ) {
-        circle3.dy = -circle3.dy;
-      }
-    }, 10);
   </script>
 </html>

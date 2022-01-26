@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "redis": "^4.0.2"
+  },
+  "name": "chromatic.systems",
+  "description": "massive multiplayer software development",
+  "version": "1.0.0",
+  "main": "redis_proxy.js",
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "start": "node redis_proxy.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --exec 'npm start'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timcash/chromatic.systems.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timcash/chromatic.systems/issues"
+  },
+  "homepage": "https://github.com/timcash/chromatic.systems#readme"
+}
