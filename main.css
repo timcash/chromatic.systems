@@ -1,4 +1,15 @@
-/* fullscreen canvas */
+/* center the main element */
+main {
+    margin: 0 auto;
+    width: 100%;
+    /* center vertical all children */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background dark grey */
+    background-color: #2d2d2d;
+}
+
 canvas {
     /* black background */
     background-color: #000;
