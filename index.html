@@ -1,87 +1,112 @@
 <!-- draws a multiplication circle -->
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Grid</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="reset.css" />
-    <link rel="stylesheet" type="text/css" href="main.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-  </head>
-  <body>
-    <main id="main">
-      <canvas id="canvas"></canvas>
-    </main>
-  </body>
-  <!-- a script that loads after the dom -->
-  <script>
-    // dissalow scrolling in css
-    document.body.style.overflow = "hidden";
-    // setup the canvas
-    var canvas = document.getElementById("canvas");
-    var ctx = canvas.getContext("2d");
-    // set the size of the canvas to fill the screen
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    // create a point to represent the center of the canvas
-    var center = {
-      x: canvas.width / 2,
-      y: canvas.height / 2,
-    };
+    <head>
+        <title>Grid</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="reset.css" />
+        <link rel="stylesheet" type="text/css" href="main.css" />
+        <link
+            rel="shortcut icon"
+            type="image/x-icon"
+            href="images/favicon.ico"
+        />
+    </head>
+    <body>
+        <main id="main">
+            <canvas id="canvas"></canvas>
+            <div id="links">
+                <a href="color_wheel.html">color_wheel</a>
+            </div>
+        </main>
+    </body>
+    <!-- a script that loads after the dom -->
+    <script>
+        // dissalow scrolling in css
+        document.body.style.overflow = "hidden";
+        // setup the canvas
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        // set the size of the canvas to fill the screen
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // create a point to represent the center of the canvas
+        var center = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+        };
 
-    // set the text color to white
-    ctx.fillStyle = "white";
+        // set the text color to white
+        ctx.fillStyle = "white";
 
-    // set the font size to large
-    ctx.font = "50px Arial";
+        // set the font size to large
+        ctx.font = "50px Arial";
 
-    // draw hello world in spanish at the center of the canvas
-    ctx.fillText("Hola Mundo", center.x - 150, center.y);
+        // draw hello world in spanish at the center of the canvas
+        ctx.fillText("Hola Mundo", center.x - 150, center.y);
 
-    //clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // draw a large circle at the center of the canvas
-    ctx.beginPath();
-    ctx.arc(center.x, center.y, 200, 0, Math.PI * 2, false);
-    ctx.fillStyle = "white";
-    ctx.fill();
+        // draw a large circle at the center of the canvas
+        ctx.beginPath();
+        ctx.arc(center.x, center.y, 200, 0, Math.PI * 2, false);
+        ctx.fillStyle = "white";
+        ctx.fill();
 
-    // draw a circle 1/2 the size of the prievous circle
-    // in black
-    ctx.beginPath();
-    ctx.arc(center.x, center.y, 100, 0, Math.PI * 2, false);
-    ctx.fillStyle = "black";
-    ctx.fill();
+        // cartiesan to polar coordinates
+        function cartToPolar(x, y) {
+            var r = Math.sqrt(x * x + y * y);
+            var theta = Math.atan2(y, x);
+            return {
+                r: r,
+                theta: theta,
+            };
+        }
 
-    // draw a half circle in red
-    ctx.beginPath();
-    ctx.arc(center.x, center.y, 50, 0, Math.PI, false);
-    ctx.fillStyle = "red";
-    ctx.fill();
+        // polar to cartiesan coordinates
+        function polarToCart(r, theta) {
+            var x = r * Math.cos(theta);
+            var y = r * Math.sin(theta);
+            return {
+                x: x,
+                y: y,
+            };
+        }
 
-    // draw a triangle inside the white circle
-    ctx.beginPath();
-    ctx.moveTo(center.x - 50, center.y - 50);
-    ctx.lineTo(center.x + 50, center.y - 50);
-    ctx.lineTo(center.x, center.y + 50);
-    ctx.fillStyle = "white";
-    ctx.fill();
+        // draw a 10px red circle at r=200, theta=0
+        var polar = cartToPolar(200, 0);
+        var cart = polarToCart(polar.r, polar.theta);
+        ctx.beginPath();
+        ctx.arc(
+            center.x + cart.x,
+            center.y + cart.y,
+            10,
+            0,
+            Math.PI * 2,
+            false
+        );
+        ctx.fillStyle = "red";
+        ctx.fill();
 
-    // draw a yellow box around the outside of the white circle
-    ctx.beginPath();
-    ctx.rect(center.x - 50, center.y - 50, 100, 100);
-    ctx.strokeStyle = "yellow";
-    ctx.stroke();
-
-    // draw a grid of white lines
-    for (var i = 0; i < canvas.width; i += 50) {
-      ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i, canvas.height);
-      ctx.strokeStyle = "white";
-      ctx.stroke();
-    }
-  </script>
+        // draw 36 circles around the circumference of the circle at r=200, theta=0
+        // rotate theta every pi/18 radians
+        for (var i = 0; i < 36; i++) {
+            polar = cartToPolar(200, 0);
+            polar.theta += ((Math.PI * 2) / 18) * i;
+            cart = polarToCart(polar.r, polar.theta);
+            ctx.beginPath();
+            ctx.arc(
+                center.x + cart.x,
+                center.y + cart.y,
+                10,
+                0,
+                Math.PI * 2,
+                false
+            );
+            ctx.fillStyle = "red";
+            ctx.fill();
+        }
+    </script>
 </html>
