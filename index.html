@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Grid</title>
+        <title>Chromatic Systems Introduction</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" type="text/css" href="reset.css" />
@@ -15,98 +15,46 @@
     </head>
     <body>
         <main id="main">
-            <canvas id="canvas"></canvas>
-            <div id="links">
-                <a href="color_wheel.html">color_wheel</a>
-            </div>
+            <blockquote class="twitter-tweet">
+                <p lang="en" dir="ltr">
+                    &quot;Medieval Warrior in Organic Style&quot;<br /><br />Optimization
+                    of large meshes is challenging, but with &quot;real&quot;
+                    geometry you can do better than &quot;fake&quot; bump
+                    mapping.<br /><br />See here a 160k vertex creature I
+                    evolved with CLIP text control - the 3D armor details are
+                    very detailed<a
+                        href="https://twitter.com/hashtag/AI?src=hash&amp;ref_src=twsrc%5Etfw"
+                        >#AI</a
+                    >
+                    <a
+                        href="https://twitter.com/hashtag/AIart?src=hash&amp;ref_src=twsrc%5Etfw"
+                        >#AIart</a
+                    >
+                    <a
+                        href="https://twitter.com/hashtag/3D?src=hash&amp;ref_src=twsrc%5Etfw"
+                        >#3D</a
+                    >
+                    <a
+                        href="https://twitter.com/hashtag/3dart?src=hash&amp;ref_src=twsrc%5Etfw"
+                        >#3dart</a
+                    >
+                    <a href="https://t.co/xsPiCntjla"
+                        >pic.twitter.com/xsPiCntjla</a
+                    >
+                </p>
+                &mdash; Nikolay Jetchev (@NJetchev)
+                <a
+                    href="https://twitter.com/NJetchev/status/1491378503421685762?ref_src=twsrc%5Etfw"
+                    >February 9, 2022</a
+                >
+            </blockquote>
+            <script
+                async
+                src="https://platform.twitter.com/widgets.js"
+                charset="utf-8"
+            ></script>
         </main>
     </body>
     <!-- a script that loads after the dom -->
-    <script>
-        // dissalow scrolling in css
-        document.body.style.overflow = "hidden";
-        // setup the canvas
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
-        // set the size of the canvas to fill the screen
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        // create a point to represent the center of the canvas
-        var center = {
-            x: canvas.width / 2,
-            y: canvas.height / 2,
-        };
-
-        // set the text color to white
-        ctx.fillStyle = "white";
-
-        // set the font size to large
-        ctx.font = "50px Arial";
-
-        // draw hello world in spanish at the center of the canvas
-        ctx.fillText("Hola Mundo", center.x - 150, center.y);
-
-        //clear the canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // draw a large circle at the center of the canvas
-        ctx.beginPath();
-        ctx.arc(center.x, center.y, 200, 0, Math.PI * 2, false);
-        ctx.fillStyle = "white";
-        ctx.fill();
-
-        // cartiesan to polar coordinates
-        function cartToPolar(x, y) {
-            var r = Math.sqrt(x * x + y * y);
-            var theta = Math.atan2(y, x);
-            return {
-                r: r,
-                theta: theta,
-            };
-        }
-
-        // polar to cartiesan coordinates
-        function polarToCart(r, theta) {
-            var x = r * Math.cos(theta);
-            var y = r * Math.sin(theta);
-            return {
-                x: x,
-                y: y,
-            };
-        }
-
-        // draw a 10px red circle at r=200, theta=0
-        var polar = cartToPolar(200, 0);
-        var cart = polarToCart(polar.r, polar.theta);
-        ctx.beginPath();
-        ctx.arc(
-            center.x + cart.x,
-            center.y + cart.y,
-            10,
-            0,
-            Math.PI * 2,
-            false
-        );
-        ctx.fillStyle = "red";
-        ctx.fill();
-
-        // draw 36 circles around the circumference of the circle at r=200, theta=0
-        // rotate theta every pi/18 radians
-        for (var i = 0; i < 36; i++) {
-            polar = cartToPolar(200, 0);
-            polar.theta += ((Math.PI * 2) / 18) * i;
-            cart = polarToCart(polar.r, polar.theta);
-            ctx.beginPath();
-            ctx.arc(
-                center.x + cart.x,
-                center.y + cart.y,
-                10,
-                0,
-                Math.PI * 2,
-                false
-            );
-            ctx.fillStyle = "red";
-            ctx.fill();
-        }
-    </script>
+    <script></script>
 </html>
