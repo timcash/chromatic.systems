@@ -1,20 +1,117 @@
 <html>
-  <head>
-    <title>Template</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="reset.css" />
-    <link rel="stylesheet" type="text/css" href="main.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-  </head>
-  <body>
-    <main>
-      <h1>The is a template page</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </p>
-      <a href="/index.html">index</a>
-    </main>
-  </body>
+    <head>
+        <title>Template</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="reset.css" />
+        <link rel="stylesheet" type="text/css" href="main.css" />
+        <link
+            rel="shortcut icon"
+            type="image/x-icon"
+            href="images/favicon.ico"
+        />
+    </head>
+    <body>
+        <main>
+            <canvas id="stage"></canvas>
+        </main>
+        <script>
+            // Set up the canvas called stage
+            var stage = document.getElementById("stage");
+            var ctx = stage.getContext("2d");
+            // make the state 100% of the screen
+            stage.width = window.innerWidth;
+            stage.height = window.innerHeight;
+
+            // a function that return a random HSL color as a string
+            function randomColor() {
+                var h = Math.floor(Math.random() * 360);
+                var s = Math.floor(Math.random() * 100);
+                var l = Math.floor(Math.random() * 100);
+                return "hsl(" + h + ", " + s + "%, " + l + "%)";
+            }
+
+            // draw an animated circle
+            function Circle(x, y, dx, dy, radius) {
+                this.x = x;
+                this.y = y;
+                this.dx = dx;
+                this.dy = dy;
+                this.radius = radius;
+                // set the color of the circle to a random color
+                this.color = randomColor();
+
+                // draw the circle
+                this.draw = function () {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                    // set the color of the circle
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.strokeStyle = "black";
+                    ctx.stroke();
+
+                    // if the circle is outside the stage width reverse the direction
+                    if (
+                        this.x + this.radius > stage.width ||
+                        this.x - this.radius < 0
+                    ) {
+                        this.dx = -this.dx;
+                    }
+
+                    // if the circle is outside the stage height reverse the direction
+                    if (
+                        this.y + this.radius > stage.height ||
+                        this.y - this.radius < 0
+                    ) {
+                        this.dy = -this.dy;
+                    }
+                };
+            }
+
+            // create three circles with random positions and velocities
+            var circle1 = new Circle(
+                Math.random() * stage.width,
+                Math.random() * stage.height,
+                Math.random() * 10 - 5,
+                Math.random() * 10 - 5,
+                30
+            );
+            var circle2 = new Circle(
+                Math.random() * stage.width,
+                Math.random() * stage.height,
+                Math.random() * 10 - 5,
+                Math.random() * 10 - 5,
+                30
+            );
+            var circle3 = new Circle(
+                Math.random() * stage.width,
+                Math.random() * stage.height,
+                Math.random() * 10 - 5,
+                Math.random() * 10 - 5,
+                30
+            );
+
+            // use animation loop to move the circles
+            // setInterval(function () {
+            //     ctx.clearRect(0, 0, innerWidth, innerHeight);
+            //     circle1.draw();
+            //     circle2.draw();
+            //     circle3.draw();
+
+            //     // update all the circles with a random dx and dy less than 1
+            //     circle1.x += circle1.dx;
+            //     circle1.y += circle1.dy;
+            //     circle2.x += circle2.dx;
+            //     circle2.y += circle2.dy;
+            //     circle3.x += circle3.dx;
+            //     circle3.y += circle3.dy;
+            // }, 10);
+
+            // create the text hello world in chinese on the canvas
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText("你好世界", 100, 100);
+        </script>
+    </body>
 </html>
