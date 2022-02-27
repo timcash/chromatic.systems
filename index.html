@@ -26,14 +26,14 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // a function to create a random hsl color
-        function randomHslColor() {
-            var h = Math.random() * 360;
-            // max saturation is 100%
-            var s = 100;
-            // max lightness is 100%
-            var l = 50;
-            return "hsl(" + h + ", " + s + "%, " + l + "%)";
+        // given an angle return a HSL color
+        function getColor(angle) {
+            return "hsl(" + angle + ", 100%, 50%)";
+        }
+
+        // given an index and partitions return the angle in radians
+        function getAngle(index, partitions) {
+            return (index * 2 * Math.PI) / partitions;
         }
 
         // create an etity to represent point
@@ -55,7 +55,9 @@
             return {
                 p1: p1,
                 p2: p2,
-                color: randomHslColor(),
+                color: getColor(
+                    (Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180) / Math.PI
+                ),
                 draw() {
                     ctx.beginPath();
                     ctx.moveTo(p1.getWorldX(), p1.getWorldY());
@@ -66,34 +68,61 @@
             };
         }
 
-        // given n returns an array of n lines along the circumference of a circle with radius 100
-        function circle(n) {
-            var lines = [];
-            var angle = 360 / n;
-            for (var i = 0; i < n; i++) {
-                var p1 = point(
-                    Math.cos((angle * i * Math.PI) / 180) * 100,
-                    Math.sin((angle * i * Math.PI) / 180) * 100
-                );
-                var p2 = point(
-                    Math.cos((angle * (i + 1) * Math.PI) / 180) * 100,
-                    Math.sin((angle * (i + 1) * Math.PI) / 180) * 100
-                );
-                lines.push(line(p1, p2));
-            }
-            return lines;
+        // given a line draw the line using the canvas context
+        function drawLine(line) {
+            ctx.beginPath();
+            ctx.moveTo(line.p1.getWorldX(), line.p1.getWorldY());
+            ctx.lineTo(line.p2.getWorldX(), line.p2.getWorldY());
+            ctx.strokeStyle = line.color;
+            ctx.stroke();
         }
 
-        // a value to represent the lines returned by the circle function
-        var lines = circle(100);
+        // given index and partitions returns a point at that index on the circumference of a circle
+        function getPointOnCircle(index, partitions, radius) {
+            var angle = (Math.PI * 2) / partitions;
+            var x = Math.cos(angle * index) * radius;
+            var y = Math.sin(angle * index) * radius;
+            return point(x, y);
+        }
 
-        // given a list of lines the function draws them
-        function drawLines(lines) {
-            for (var i = 0; i < lines.length; i++) {
-                lines[i].draw();
+        // given two indexes and partitions returns a line between those points
+        function getLineOnCircle(index1, index2, partitions, radius) {
+            var p1 = getPointOnCircle(index1, partitions, radius);
+            var p2 = getPointOnCircle(index2, partitions, radius);
+            return line(p1, p2);
+        }
+
+        // for each of 144 partitions as index1 multiply it by 3 to get index2
+        function multiplyPoints(multiple) {
+            // clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // loop over each of 144 partitions
+            for (var index1 = 0; index1 < 144; index1++) {
+                // multiply index1 by 3 to get index2
+                var index2 = index1 * multiple;
+                // get the line between the two points
+                var line = getLineOnCircle(
+                    index1,
+                    index2,
+                    144,
+                    canvas.width / 2.2
+                );
+                // draw the line
+                drawLine(line);
             }
         }
 
-        drawLines(lines);
+        // store the current value of the multiplier
+        var currentMultiplier = 0;
+
+        // call multiplyPoints 1 time per second and increment the multiplier
+        setInterval(function () {
+            multiplyPoints(currentMultiplier);
+            currentMultiplier += 0.01;
+            // if currentMultiplier is greater than 143 reset it to 0
+            if (currentMultiplier > 143) {
+                currentMultiplier = 0;
+            }
+        }, 1000 / 60);
     </script>
 </html>
