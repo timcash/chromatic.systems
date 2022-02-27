@@ -14,46 +14,86 @@
     </head>
     <body>
         <main id="main">
-            <blockquote class="twitter-tweet">
-                <p lang="en" dir="ltr">
-                    &quot;Medieval Warrior in Organic Style&quot;<br /><br />Optimization
-                    of large meshes is challenging, but with &quot;real&quot;
-                    geometry you can do better than &quot;fake&quot; bump
-                    mapping.<br /><br />See here a 160k vertex creature I
-                    evolved with CLIP text control - the 3D armor details are
-                    very detailed<a
-                        href="https://twitter.com/hashtag/AI?src=hash&amp;ref_src=twsrc%5Etfw"
-                        >#AI</a
-                    >
-                    <a
-                        href="https://twitter.com/hashtag/AIart?src=hash&amp;ref_src=twsrc%5Etfw"
-                        >#AIart</a
-                    >
-                    <a
-                        href="https://twitter.com/hashtag/3D?src=hash&amp;ref_src=twsrc%5Etfw"
-                        >#3D</a
-                    >
-                    <a
-                        href="https://twitter.com/hashtag/3dart?src=hash&amp;ref_src=twsrc%5Etfw"
-                        >#3dart</a
-                    >
-                    <a href="https://t.co/xsPiCntjla"
-                        >pic.twitter.com/xsPiCntjla</a
-                    >
-                </p>
-                &mdash; Nikolay Jetchev (@NJetchev)
-                <a
-                    href="https://twitter.com/NJetchev/status/1491378503421685762?ref_src=twsrc%5Etfw"
-                    >February 9, 2022</a
-                >
-            </blockquote>
-            <script
-                async
-                src="https://platform.twitter.com/widgets.js"
-                charset="utf-8"
-            ></script>
+            <canvas id="stage"></canvas>
         </main>
     </body>
     <!-- a script that loads after the dom -->
-    <script></script>
+    <script>
+        // setup the canvas
+        var canvas = document.getElementById("stage");
+        var ctx = canvas.getContext("2d");
+        // set the size of the canvas to fill the screen
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // a function to create a random hsl color
+        function randomHslColor() {
+            var h = Math.random() * 360;
+            // max saturation is 100%
+            var s = 100;
+            // max lightness is 100%
+            var l = 50;
+            return "hsl(" + h + ", " + s + "%, " + l + "%)";
+        }
+
+        // create an etity to represent point
+        function point(x, y) {
+            return {
+                x: x,
+                y: y,
+                getWorldX: function () {
+                    return this.x + canvas.width / 2;
+                },
+                getWorldY: function () {
+                    return this.y + canvas.height / 2;
+                },
+            };
+        }
+
+        // given two points the function returns {p1,p2}
+        function line(p1, p2) {
+            return {
+                p1: p1,
+                p2: p2,
+                color: randomHslColor(),
+                draw() {
+                    ctx.beginPath();
+                    ctx.moveTo(p1.getWorldX(), p1.getWorldY());
+                    ctx.lineTo(p2.getWorldX(), p2.getWorldY());
+                    ctx.strokeStyle = this.color;
+                    ctx.stroke();
+                },
+            };
+        }
+
+        // given n returns an array of n lines along the circumference of a circle with radius 100
+        function circle(n) {
+            var lines = [];
+            var angle = 360 / n;
+            for (var i = 0; i < n; i++) {
+                var p1 = point(
+                    Math.cos((angle * i * Math.PI) / 180) * 100,
+                    Math.sin((angle * i * Math.PI) / 180) * 100
+                );
+                var p2 = point(
+                    Math.cos((angle * (i + 1) * Math.PI) / 180) * 100,
+                    Math.sin((angle * (i + 1) * Math.PI) / 180) * 100
+                );
+                lines.push(line(p1, p2));
+            }
+            return lines;
+        }
+
+        // a value to represent the lines returned by the circle function
+        var lines = circle(100);
+
+        // given a list of lines the function draws them
+        function drawLines(lines) {
+            for (var i = 0; i < lines.length; i++) {
+                lines[i].draw();
+            }
+        }
+
+        drawLines(lines);
+    </script>
 </html>

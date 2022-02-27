@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chromatic Systems Introduction</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="reset.css" />
+        <link rel="stylesheet" type="text/css" href="main.css" />
+        <link
+            rel="shortcut icon"
+            type="image/x-icon"
+            href="images/favicon.ico"
+        />
+    </head>
+    <body>
+        <main id="main">
+            <canvas id="stage"></canvas>
+        </main>
+    </body>
+    <!-- a script that loads after the dom -->
+    <script>
+        // setup the canvas
+        var canvas = document.getElementById("stage");
+        var ctx = canvas.getContext("2d");
+        // set the size of the canvas to fill the screen
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // draw a nxm grid of boxes
+        function drawGrid(n, m) {
+            const gapSize = 10;
+            var boxWidth = canvas.width / n;
+            var boxHeight = canvas.height / m;
+            for (var i = 0; i < n; i++) {
+                for (var j = 0; j < m; j++) {
+                    ctx.fillStyle =
+                        "hsl(" + ((i + j) * 360) / (n + m) + ", 100%, 50%)";
+                    ctx.fillRect(
+                        i * (boxWidth + gapSize),
+                        j * (boxHeight + gapSize),
+                        boxWidth,
+                        boxHeight
+                    );
+                }
+            }
+        }
+
+        drawGrid(10, 10);
+    </script>
+</html>
