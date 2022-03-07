@@ -15,24 +15,3 @@ canvas {
     /* black background */
     background-color: #000;
 }
-
-#links {
-    /* fixed to top left */
-    position: fixed;
-    top: 0;
-    left: 0;
-    /* white text */
-    color: #fff;
-}
-
-/* a hover is hsl(198, 99, 58) */
-a:hover {
-    color: "orange";
-    /* cursor pointer */
-    cursor: pointer;
-}
-
-/* a visited */
-a:visited {
-    color: #0a0;
-}

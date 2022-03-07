@@ -1,21 +1,73 @@
 <html>
     <head>
-        <title>Template</title>
+        <title>Music List</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="reset.css" />
+        <link rel="stylesheet" type="text/css" href="main.css" />
         <link
             rel="shortcut icon"
             type="image/x-icon"
             href="images/favicon.ico"
         />
+        <style>
+            /* all text is white */
+            body {
+                color: white;
+            }
+
+            /* make the font large and sans serif */
+            h1 {
+                font-size: 2em;
+                font-family: "Arial", sans-serif;
+            }
+
+            /* p is san serif and bold */
+            p {
+                font-family: "Arial", sans-serif;
+                font-weight: bold;
+            }
+
+            ul {
+                /* padding bottom 30px */
+                padding-bottom: 30px;
+            }
+
+            /* all links are light blue */
+            a {
+                color: rgb(51, 160, 233);
+            }
+            a:visited {
+                color: rgb(153, 205, 240);
+            }
+
+            /* li have a solid 1 pixel bottom border */
+            li {
+                border-bottom: 1px solid white;
+                padding-bottom: 10px;
+            }
+
+            figcaption {
+                padding-bottom: 10px;
+                padding-top: 10px;
+                font-family: "Arial", sans-serif;
+                font-weight: bold;
+            }
+
+            audio {
+                width: 250px;
+                height: 50px;
+                margin-bottom: 10px;
+            }
         </style>
     </head>
     <body>
         <main>
+            <h1>Music List</h1>
             <!-- A list of links to music in the /music directory -->
             <ul>
                 <li>
-                    <!-- a sound player for images/g1_spanish_classical -->
+                    <!-- a sound player for music/g1_spanish_classical -->
                     <figure>
                         <figcaption>Listen to the T-Rex:</figcaption>
                         <audio controls preload="auto">
@@ -31,10 +83,30 @@
                         <a href="music/g1_spanish_classical.mp3"
                             >link to the audio</a
                         >
-                        instead.
+                    </p>
+                </li>
+                <li>
+                    <!-- a sound player for music/mar7 -->
+                    <figure>
+                        <figcaption>Migo:</figcaption>
+                        <audio controls preload="auto">
+                            <source src="music/mar7.mp3" type="audio/mp3" />
+                            Your browser does not support the
+                            <code>audio</code> element.
+                        </audio>
+                    </figure>
+                    <p>
+                        <a href="music/mar7.mp3">link to the audio</a>
                     </p>
                 </li>
             </ul>
+
+            <!-- <h1>Custom Audio Player</h1>
+            <div id="audio-player-container">
+                <p>Audio Player</p>
+                <button id="play-icon"></button>
+            </div> 
+            -->
         </main>
         <script></script>
     </body>
