@@ -207,7 +207,12 @@
                 }
             });
         }
+
+        // draw the circle
         drawCircle();
+
+        // every 3 seconds draw a new circle
+        setInterval(drawCircle, 3000);
 
         // // load an image from the images folder called tractor.png
         // var tractor = new Image();
