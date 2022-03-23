@@ -1,3 +1,11 @@
+# vscode shortcuts
+
+1. use command+J to toggle the terminal
+2. use command+shift+p to toggle the command search
+3. toggle centerd layout
+4. format document
+5. live server
+
 # chromatic.systems
 
 massive multiplayer software development
