@@ -5,6 +5,7 @@
 3. toggle centerd layout
 4. format document
 5. live server
+6. markdown preview
 
 # chromatic.systems
 
@@ -16,6 +17,20 @@ massive multiplayer software development
 2. sign up for a github account
 3. install github desktop
 4. apply for github co-pilot
+5. apply for openai
+6. install nodejs
+7. install with npx
+
+```
+npx playwright install
+```
+
+8. install zig
+
+```
+download https://ziglang.org/download/0.9.1/zig-macos-aarch64-0.9.1.tar.xz
+export PATH=$PATH:~/path/to/zig
+```
 
 ## install vs code
 
