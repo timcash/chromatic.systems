@@ -32,7 +32,14 @@ download https://ziglang.org/download/0.9.1/zig-macos-aarch64-0.9.1.tar.xz
 export PATH=$PATH:~/path/to/zig
 ```
 
-## install vs code
+## Crawler
+
+1. install playwrite
+
+```
+npx playwright install
+npx playwright test
+```
 
 ## handy commands
 
