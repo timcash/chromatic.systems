@@ -3,8 +3,8 @@
         <title>Music List</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" type="text/css" href="reset.css" />
-        <link rel="stylesheet" type="text/css" href="main.css" />
+        <link rel="stylesheet" type="text/css" href="/css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" />
         <link
             rel="shortcut icon"
             type="image/x-icon"
@@ -12,6 +12,10 @@
         />
         <style>
             /* make the font large and sans serif */
+            main {
+                padding: 5px;
+            }
+
             h1 {
                 font-size: 2em;
                 font-family: "Arial", sans-serif;
@@ -39,7 +43,7 @@
             /* li have a solid 1 pixel bottom border */
             li {
                 border-bottom: 1px solid white;
-                padding-bottom: 10px;
+                padding: 15px;
             }
 
             figcaption {
@@ -67,7 +71,7 @@
                         <figcaption>Listen to the T-Rex:</figcaption>
                         <audio controls preload="auto">
                             <source
-                                src="music/g1_spanish_classical.mp3"
+                                src="/music/g1_spanish_classical.mp3"
                                 type="audio/mp3"
                             />
                             Your browser does not support the
@@ -75,7 +79,7 @@
                         </audio>
                     </figure>
                     <p>
-                        <a href="music/g1_spanish_classical.mp3"
+                        <a href="/music/g1_spanish_classical.mp3"
                             >link to the audio</a
                         >
                     </p>
@@ -83,26 +87,40 @@
                 <li>
                     <!-- a sound player for music/mar7 -->
                     <figure>
-                        <figcaption>Migo:</figcaption>
+                        <figcaption>March 7 2022:</figcaption>
                         <audio controls preload="auto">
-                            <source src="music/mar7.mp3" type="audio/mp3" />
+                            <source src="/music/mar7.mp3" type="audio/mp3" />
                             Your browser does not support the
                             <code>audio</code> element.
                         </audio>
                     </figure>
                     <p>
-                        <a href="music/mar7.mp3">link to the audio</a>
+                        <a href="/music/mar7.mp3">link to the audio</a>
+                    </p>
+                </li>
+                <li>
+                    <!-- a sound player for /music/apr_9.mp3 -->
+                    <figure>
+                        <figcaption>April 9 2022:</figcaption>
+                        <audio controls preload="auto">
+                            <source src="/music/apr_9.mp3" type="audio/mp3" />
+                            Your browser does not support the
+                            <code>audio</code> element.
+                        </audio>
+                    </figure>
+                    <p>
+                        <a href="/music/apr_9.mp3">link to the audio</a>
                     </p>
                 </li>
             </ul>
+        </main>
 
-            <!-- <h1>Custom Audio Player</h1>
+        <!-- <h1>Custom Audio Player</h1>
             <div id="audio-player-container">
                 <p>Audio Player</p>
                 <button id="play-icon"></button>
             </div> 
             -->
-        </main>
         <script></script>
     </body>
 </html>
