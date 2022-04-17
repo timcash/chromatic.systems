@@ -57,6 +57,12 @@ redis-cli ping
 
 ## Connect to Cloudflare
 
+### Setup a load balancer
+
+```
+cloudflared tunnel route lb <tunnel ID or NAME> <load balancer name> <load balancer pool>
+```
+
 ```
 You can now route traffic to your Tunnel, and on to your local server, using Cloudflare DNS. Visit the Cloudflare dashboard, select a website, and click on the DNS tab.
 
