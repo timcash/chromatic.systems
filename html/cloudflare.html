@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cloudflare</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="/css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" />
+        <link
+            rel="shortcut icon"
+            type="image/x-icon"
+            href="/images/favicon.ico"
+        />
+        <style>
+            pre code {
+                background-color: #222;
+                font-family: sans-serif;
+                border: 1px solid #999;
+                display: block;
+                padding: 20px;
+            }
+
+            /* main is padded by 10px */
+            main {
+                padding: 10px;
+            }
+
+            .slide {
+                height: 90vh;
+            }
+
+            /* h1 is bold and large */
+            h1 {
+                font-size: 2em;
+                font-family: "Arial", sans-serif;
+            }
+
+            /* h2 is bold and large */
+            h2 {
+                font-size: 1.5em;
+                font-family: "Arial", sans-serif;
+            }
+
+            /* p is san serif and bold */
+            p {
+                font-family: "Arial", sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="slide">
+                <h1>Connect to Cloudflare</h1>
+                <h2>Setup a load balancer</h2>
+                <pre>  
+                <code>
+                    $ cloudflared tunnel route lb $tunnel_id_name $load_balancer_name $load_balancer_pool
+                </code>
+                </pre>
+            </div>
+
+            <div class="slide">
+                <p>
+                    You can now route traffic to your Tunnel, and on to your
+                    local server, using Cloudflare DNS. Visit the Cloudflare
+                    dashboard, select a website, and click on the DNS tab. Click
+                    +Add record and choose CNAME. In the Name field, add the
+                    name of the subdomain of your new site. In the Content
+                    field, paste the ID of your Tunnel created earlier and
+                    append cfargotunnel.com.
+                    5157d321-5933-4b30-938b-d889ca87e11b.cfargotunnel.com
+                </p>
+            </div>
+        </main>
+    </body>
+</html>
