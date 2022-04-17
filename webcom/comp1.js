@@ -1,4 +1,4 @@
-class Bijection extends HTMLElement {
+class Comp1 extends HTMLElement {
     constructor() {
         super();
 
@@ -27,4 +27,4 @@ class Bijection extends HTMLElement {
         this.shadowRoot.appendChild(_template.content.cloneNode(true));
     }
 }
-customElements.define("bijection-element", Bijection);
+customElements.define("comp1", Comp1);
