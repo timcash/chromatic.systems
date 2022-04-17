@@ -11,235 +11,36 @@
             type="image/x-icon"
             href="images/favicon.ico"
         />
+        <!-- Import element definition -->
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"
+        ></script>
+        <style>
+            main {
+                height: 100vh;
+                width: 100vw;
+                /* 30px padding */
+                padding: 60px;
+                /*  radial gradient background from black to white */
+                background: radial-gradient(
+                    circle,
+                    hsl(0, 0%, 10%) 0%,
+                    hsl(0, 0%, 5%) 100%
+                );
+                /* align all elements in the center */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
     </head>
     <body>
         <main id="main">
-            <canvas id="stage"></canvas>
+            <script type="module" src="/webcom/bijection.js"></script>
+            <bijection-element></bijection-element>
         </main>
     </body>
     <!-- a script that loads after the dom -->
-    <script>
-        // setup the canvas
-        var canvas = document.getElementById("stage");
-        var ctx = canvas.getContext("2d");
-        // set the size of the canvas to fill the screen
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        // get the max radius of the circle based on the min of the width and height
-        const max_radius = Math.min(canvas.width, canvas.height) / 2;
-
-        // pairs are of type [multiplier, partitions]
-        const start_pairs = [
-            [92, 272],
-            [103, 272],
-            [2, 288],
-            [135, 272],
-            [33, 1028],
-            [143, 144],
-            [95, 190],
-            [172, 682],
-            [228, 684],
-            [229, 684],
-            [271, 813],
-            [272, 813],
-        ];
-
-        // select a random element from the start_pairs array and return pair as an object
-        const random_start = () => {
-            const pair =
-                start_pairs[Math.floor(Math.random() * start_pairs.length)];
-            return {
-                multiplier: pair[0],
-                partitions: pair[1],
-            };
-        };
-
-        function drawCircle() {
-            // store the current value of the multiplier
-            let { multiplier: currentMultiplier, partitions } = random_start();
-            const multiplierStepSize = 1;
-            let trailSize = 1;
-
-            // given an angle return a HSL color
-            function getColor(angle) {
-                return "hsl(" + angle + ", 100%, 50%)";
-            }
-
-            // given an index and partitions return the angle in radians
-            function getAngle(index, partitions) {
-                return (index * 2 * Math.PI) / partitions;
-            }
-
-            // create an etity to represent point
-            function point(x, y) {
-                return {
-                    x: x,
-                    y: y,
-                    getWorldX: function () {
-                        return this.x + canvas.width / 2;
-                    },
-                    getWorldY: function () {
-                        return this.y + canvas.height / 2;
-                    },
-                };
-            }
-
-            // given two points the function returns {p1,p2}
-            function line(p1, p2) {
-                return {
-                    p1: p1,
-                    p2: p2,
-                    color: getColor(
-                        (Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180) / Math.PI
-                    ),
-                    draw() {
-                        ctx.beginPath();
-                        ctx.moveTo(p1.getWorldX(), p1.getWorldY());
-                        ctx.lineTo(p2.getWorldX(), p2.getWorldY());
-                        ctx.strokeStyle = this.color;
-                        ctx.stroke();
-                    },
-                };
-            }
-
-            // given a line draw the line using the canvas context
-            function drawLine(line) {
-                ctx.beginPath();
-                ctx.moveTo(line.p1.getWorldX(), line.p1.getWorldY());
-                ctx.lineTo(line.p2.getWorldX(), line.p2.getWorldY());
-                ctx.strokeStyle = line.color;
-                ctx.stroke();
-            }
-
-            // given index and partitions returns a point at that index on the circumference of a circle
-            function getPointOnCircle(index, partitions, radius) {
-                var angle = (Math.PI * 2) / partitions;
-                var x = Math.cos(angle * index) * radius;
-                var y = Math.sin(angle * index) * radius;
-                return point(x, y);
-            }
-
-            // given two indexes and partitions returns a line between those points
-            function getLineOnCircle(index1, index2, partitions, radius) {
-                var p1 = getPointOnCircle(index1, partitions, radius);
-                var p2 = getPointOnCircle(index2, partitions, radius);
-                return line(p1, p2);
-            }
-
-            // for each of 144 partitions as index1 multiply it by 3 to get index2
-            function drawMultCircle(multiple, partitions) {
-                // clear the canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // loop over each of partitions
-                for (var index1 = 0; index1 < partitions; index1++) {
-                    // multiply index1 by multiple to get index2
-                    var index2 = index1 * multiple;
-                    // get the line between the two points
-                    var line = getLineOnCircle(
-                        index1,
-                        index2,
-                        partitions,
-                        max_radius
-                    );
-                    // draw the line
-                    drawLine(line);
-                }
-
-                // draw text to represent the multiple
-                ctx.font = "180px Arial";
-                ctx.fillStyle = "white";
-                ctx.fillText(multiple + "x", 20, 190);
-
-                // draw text to represent the number of partitions
-                ctx.font = "18px Arial";
-                ctx.fillStyle = "white";
-                ctx.fillText(partitions + "", 20, 40);
-            }
-
-            drawMultCircle(currentMultiplier, partitions);
-
-            // while the right arrow key is pressed increate the multiplier by 0.01
-            document.addEventListener("keydown", function (event) {
-                if (event.keyCode == 39) {
-                    currentMultiplier += multiplierStepSize;
-                    currentMultiplierFloor = Math.floor(currentMultiplier);
-                    drawMultCircle(currentMultiplierFloor, partitions);
-
-                    // if the current multiplier is greater than partitions reset it to 0
-                    if (currentMultiplier > partitions) {
-                        currentMultiplier = 0;
-                    }
-                }
-
-                if (event.keyCode == 37) {
-                    currentMultiplier -= multiplierStepSize;
-                    currentMultiplierFloor = Math.floor(currentMultiplier);
-                    drawMultCircle(currentMultiplierFloor, partitions);
-
-                    // if the current multiplier is less than 0.01 set it to partitions
-                    if (currentMultiplier < 0.01) {
-                        currentMultiplier = partitions;
-                    }
-                }
-
-                // if the up arrow key is pressed increase the partitions by 1
-                if (event.keyCode == 38) {
-                    partitions = Math.floor(partitions + 1);
-                    if (partitions > 3000) {
-                        partitions = 2048;
-                    }
-                    currentMultiplierFloor = Math.floor(currentMultiplier);
-                    drawMultCircle(currentMultiplierFloor, partitions);
-                }
-
-                // if the down arrow key is pressed decrease the partitions by 1
-                if (event.keyCode == 40) {
-                    partitions = Math.floor(partitions - 1);
-                    // if the currentMultiplier is greater than partitions set it to max partitions
-                    if (currentMultiplier > partitions) {
-                        currentMultiplier = partitions;
-                    }
-
-                    // if partitions are less than 6 set to 6
-                    if (partitions < 6) {
-                        partitions = 6;
-                    }
-
-                    currentMultiplierFloor = Math.floor(currentMultiplier);
-                    drawMultCircle(currentMultiplierFloor, partitions);
-                }
-            });
-        }
-
-        // draw the circle
-        drawCircle();
-
-        // every 3 seconds draw a new circle
-        //setInterval(drawCircle, 3000);
-
-        // // load an image from the images folder called tractor.png
-        // var tractor = new Image();
-        // tractor.src = "images/tractor.png";
-        // // draw it on the stage
-        // tractor.onload = function () {
-        //     // preserve the aspect ratio of the image
-        //     var ratio = tractor.width / tractor.height;
-        //     var width = canvas.width;
-        //     var height = canvas.height;
-        //     if (width / height > ratio) {
-        //         width = height * ratio;
-        //     } else {
-        //         height = width / ratio;
-        //     }
-        //     // draw the image in the middle of the canvas
-        //     ctx.drawImage(
-        //         tractor,
-        //         (canvas.width - width) / 2,
-        //         (canvas.height - height) / 2,
-        //         width,
-        //         height
-        //     );
-        // };
-    </script>
+    <script></script>
 </html>

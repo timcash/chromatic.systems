@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chromatic Systems Introduction</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link
+            rel="shortcut icon"
+            type="image/x-icon"
+            href="images/favicon.ico"
+        />
+    </head>
+    <body>
+        <main id="main">
+            <canvas id="stage"></canvas>
+        </main>
+    </body>
+    <!-- a script that loads after the dom -->
+    <script>
+        // setup the canvas
+        var canvas = document.getElementById("stage");
+        var ctx = canvas.getContext("2d");
+        // set the size of the canvas to fill the screen
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // radius will be 100
+        var radius = 100;
+
+        // function: white circle in the middle of the screen
+        function drawCircle(radius) {
+            ctx.beginPath();
+            ctx.arc(
+                canvas.width / 2,
+                canvas.height / 2,
+                radius,
+                0,
+                Math.PI * 2,
+                false
+            );
+            ctx.fillStyle = "white";
+            ctx.fill();
+        }
+        // draw the circle
+        drawCircle(radius);
+
+        // draw the radius of the circle in the top left corner
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText(`${radius}`, 10, 20);
+
+        // clear the canvas
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        clearCanvas();
+
+        // mark the current time
+        function markTime() {
+            ctx.font = "20px Arial";
+            ctx.fillStyle = "white";
+            ctx.fillText(`${new Date().getTime()}`, 10, 20);
+        }
+
+        // a list of math greek symbols
+        var symbols = [
+            "alpha",
+            "beta",
+            "gamma",
+            "delta",
+            "epsilon",
+            "zeta",
+            "eta",
+            "theta",
+            "iota",
+            "kappa",
+            "lambda",
+            "mu",
+            "nu",
+            "xi",
+            "omicron",
+            "pi",
+            "rho",
+            "sigma",
+            "tau",
+            "upsilon",
+            "phi",
+            "chi",
+            "psi",
+            "omega",
+        ];
+        function draw_greek_symbols() {
+            // for each symbol in the list create a new line and draw the utf-8 symbol
+            symbols.forEach((symbol) => {
+                ctx.font = "20px Arial";
+                ctx.fillStyle = "white";
+                // create text like [symbol name, symbol utf-8]
+                symbol_text = `[${symbol}, ${String.fromCharCode(
+                    0x03b1 + symbols.indexOf(symbol)
+                )}]`;
+                ctx.fillText(
+                    symbol_text,
+                    10,
+                    20 + symbols.indexOf(symbol) * 20
+                );
+            });
+        }
+
+        // start animation loop
+        function animate() {
+            // clear the canvas
+            clearCanvas();
+            // mark the current time
+            //markTime();
+            // draw greek symbols
+            draw_greek_symbols();
+            // draw the circle
+            drawCircle(radius);
+            // increase the radius
+            radius += 0.01;
+            // if the radius is less than the width of the canvas
+            if (radius < canvas.width) {
+                // call the animation loop again
+                requestAnimationFrame(animate);
+            }
+        }
+
+        // call the animation loop
+        animate();
+    </script>
+</html>
