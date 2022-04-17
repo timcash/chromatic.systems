@@ -1,4 +1,4 @@
-class Comp1 extends HTMLElement {
+class Comp extends HTMLElement {
     constructor() {
         super();
 
@@ -27,4 +27,4 @@ class Comp1 extends HTMLElement {
         this.shadowRoot.appendChild(_template.content.cloneNode(true));
     }
 }
-customElements.define("comp1", Comp1);
+customElements.define("comp-one", Comp);
