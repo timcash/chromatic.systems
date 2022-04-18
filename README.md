@@ -1,3 +1,9 @@
+# Find
+
+1. clear
+2. interesting
+3. actionable
+
 # vscode shortcuts
 
 1. use command+J to toggle the terminal

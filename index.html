@@ -11,36 +11,109 @@
             type="image/x-icon"
             href="images/favicon.ico"
         />
-        <!-- Import element definition -->
-        <script
-            type="module"
-            src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@2/dist/zero-md.min.js"
-        ></script>
-        <style>
-            main {
-                height: 100vh;
-                width: 100vw;
-                /* 30px padding */
-                padding: 60px;
-                /*  radial gradient background from black to white */
-                background: radial-gradient(
-                    circle,
-                    hsl(0, 0%, 10%) 0%,
-                    hsl(0, 0%, 5%) 100%
-                );
-                /* align all elements in the center */
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        </style>
     </head>
     <body>
-        <main id="main">
-            <script type="module" src="/webcom/comp1.js"></script>
-            <comp-one></comp-one>
-        </main>
+        <canvas id="stage"></canvas>
     </body>
-    <!-- a script that loads after the dom -->
-    <script></script>
+    <script>
+        // get a 2D context
+        var stage = document.getElementById("stage");
+        var ctx = stage.getContext("2d");
+
+        // set the canvas size to 100% of the window
+        stage.width = window.innerWidth;
+        stage.height = window.innerHeight;
+
+        // stage_min_x = -stage.width / 2;
+        let stage_min_x = -stage.width / 2;
+        let stage_max_x = stage.width / 2;
+        let stage_min_y = -stage.height / 2;
+        let stage_max_y = stage.height / 2;
+
+        // an empty list for functions
+        let func_list = [];
+
+        // transform the canvas in the x direction by 1/2 the width
+        ctx.translate(stage_max_x, 0);
+        //transform the canvas in the y direction by 1/2 the height
+        ctx.translate(0, stage_max_y);
+
+        // scale the image by 80%
+        ctx.scale(1.0, 1.0);
+
+        // function draw_text(text, x, y, color)
+        function draw_text(text, x, y, color) {
+            ctx.fillStyle = color;
+            ctx.font = "20px Arial";
+            ctx.fillText(text, x, y);
+        }
+
+        // function draw_line(x1, y1, x2, y2, color)
+        function draw_line(x1, y1, x2, y2, color) {
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        // rand_int_in_range(min, max)
+        function rand_int_in_range(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // draw_random_line using draw_line
+        function draw_random_line() {
+            let x1 = rand_int_in_range(stage_min_x, stage_max_x);
+            let y1 = rand_int_in_range(stage_min_y, stage_max_y);
+            let x2 = rand_int_in_range(stage_min_x, stage_max_x);
+            let y2 = rand_int_in_range(stage_min_y, stage_max_y);
+            draw_line(x1, y1, x2, y2, "red");
+        }
+
+        function clear_stage() {
+            ctx.clearRect(stage_min_x, stage_min_y, stage.width, stage.height);
+        }
+
+        func_list.push(draw_random_line);
+        func_list.push(draw_random_line);
+        func_list.push(draw_random_line);
+        func_list.push(draw_random_line);
+        func_list.push(draw_random_line);
+        func_list.push(clear_stage);
+        func_list.push(draw_random_line);
+        func_list.push(draw_random_line);
+        func_list.push(draw_random_line);
+        func_list.push(draw_random_line);
+
+        // loop over a list of functions sleeping for 1 second in between
+        // each iteration
+        var i = 0;
+        var prev_i = -1;
+
+        // start animation loop with requestAnimationFrame
+        let start, previousTimeStamp;
+
+        function step(timestamp) {
+            if (start === undefined) {
+                start = timestamp;
+            }
+            const elapsed = timestamp - start;
+            window.requestAnimationFrame(step);
+            // clear the canvas
+            //ctx.clearRect(stage_min_x, stage_min_y, stage.width, stage.height);
+
+            iter = Math.floor(elapsed / 100);
+            //draw_text(iter, stage_min_x + 5, stage_min_y + 20, "white");
+            // convert iter to integer and save it to i
+            i = iter % func_list.length;
+            // call list i if i has not yet been called
+            if (i != prev_i) {
+                func_list[i]();
+                prev_i = i;
+            }
+        }
+
+        window.requestAnimationFrame(step);
+    </script>
 </html>
